@@ -11,10 +11,9 @@ import { UserModule } from './user/user.module';
   }),MongooseModule.forRootAsync(
     {
       imports: [ConfigModule],
-      useFactory: async (configService) => ({
+      useFactory: async (configService: ConfigService) => ({
         uri: configService.get('DATABASE_URI'),
         useNewUrlParser: true,
-        useCreateIndex: true,
       }),
       inject: [ConfigService],
     },
