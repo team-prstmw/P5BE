@@ -1,14 +1,39 @@
-import { Controller, Request, Post, UseGuards } from '@nestjs/common';
-import { JwtAuthGuard } from './jwt-auth.guard';
-import { AuthService } from './auth.service';
+import {
+  Controller,
+  Request,
+  Post,
+  UseGuards,
+  BadRequestException,
+  Body,
+} from "@nestjs/common";
+import { JwtAuthGuard } from "./jwt-auth.guard";
+import { AuthService } from "./auth.service";
+import { RegisterUserDto } from "./dto/register-user.dto";
+import { LoginUserDto } from "./dto/login-user.dto";
 
-@Controller()
+@Controller("auth")
 export class AuthController {
   constructor(private authService: AuthService) {}
 
-  @UseGuards(JwtAuthGuard)
-  @Post('auth/login')
-  async login(@Request() req) {
-    return this.authService.login(req.user);
+  @Post("login")
+  async login(@Request() req, @Body() loginUserDto: LoginUserDto) {
+    const token = await this.authService.login(loginUserDto);
+
+    if (!token) {
+      throw new BadRequestException("Invalid credentials");
+    }
+
+    return token;
+  }
+
+  @Post("register")
+  async register(@Request() req, @Body() registerUserDto: RegisterUserDto) {
+    const token = await this.authService.register(registerUserDto);
+
+    if (!token) {
+      throw new BadRequestException("Invalid credentials");
+    }
+
+    return token;
   }
 }

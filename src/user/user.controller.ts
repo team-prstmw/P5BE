@@ -1,34 +1,45 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
-import { UserService } from './user.service';
-import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  UseGuards,
+} from "@nestjs/common";
+import { UserService } from "./user.service";
+import { UpdateUserDto } from "./dto/update-user.dto";
+import { JwtAuthGuard } from "src/auth/jwt-auth.guard";
+import { RolesGuard } from "src/auth/roles.guard";
+import { Role } from "src/shared/enums/user-role.enum";
+import { AllowRoles } from "src/auth/roles.decorator";
+import { sanitizeUser, sanitizeUsers } from "src/utils/sanitize";
 
-@Controller('user')
+@Controller("users")
+@UseGuards(JwtAuthGuard, RolesGuard)
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
-  @Post()
-  async create(@Body() createUserDto: CreateUserDto) {
-    return this.userService.create(createUserDto);
-  }
-
   @Get()
   async findAll() {
-    return this.userService.findAll();
+    return sanitizeUsers(await this.userService.findAll());
   }
 
-  @Get(':id')
-  async findOne(@Param('id') id: string) {
-    return this.userService.findById(id);
+  @Get(":id")
+  async findOne(@Param("id") id: string) {
+    return sanitizeUser(await this.userService.findById(id));
   }
 
-  @Patch(':id')
-  async update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
+  @AllowRoles(Role.ADMIN)
+  @Patch(":id")
+  async update(@Param("id") id: string, @Body() updateUserDto: UpdateUserDto) {
     return this.userService.update(id, updateUserDto);
   }
 
-  @Delete(':id')
-  async remove(@Param('id') id: string) {
+  @AllowRoles(Role.ADMIN)
+  @Delete(":id")
+  async remove(@Param("id") id: string) {
     return this.userService.remove(id);
   }
 }
