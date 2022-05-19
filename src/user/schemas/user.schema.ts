@@ -5,7 +5,7 @@ import { Role } from "src/shared/enums/user-role.enum";
 export type UserDocument = Document & User;
 
 @Schema()
-export class User extends Document {
+export class User {
   @Prop({ required: true })
   username: string;
 

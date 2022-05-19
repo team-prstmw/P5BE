@@ -1,8 +1,8 @@
-import { User, UserDocument } from "src/user/schemas/user.schema";
+import { UserDocument } from "src/user/schemas/user.schema";
 
 export const sanitizeUser = (user: UserDocument) => {
   return {
-    id: user.id,
+    id: user._id,
     username: user.username,
     role: user.role,
   };

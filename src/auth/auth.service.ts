@@ -1,12 +1,12 @@
 import { BadRequestException, Injectable } from "@nestjs/common";
 import { UserService } from "../user/user.service";
 import { JwtService } from "@nestjs/jwt";
-import { ConfigService } from "@nestjs/config";
-import { CreateUserDto } from "src/user/dto/create-user.dto";
-import { User } from "src/user/schemas/user.schema";
+const bcrypt = require("bcrypt");
+
+import { UserDocument } from "src/user/schemas/user.schema";
 import { LoginUserDto } from "./dto/login-user.dto";
 import { RegisterUserDto } from "./dto/register-user.dto";
-const bcrypt = require("bcrypt");
+import { TokenPayloadDto } from "./dto/token-payload.dto";
 
 @Injectable()
 export class AuthService {
@@ -18,7 +18,7 @@ export class AuthService {
   async validateUser(
     username: string,
     pass: string
-  ): Promise<Partial<User> | null> {
+  ): Promise<Partial<UserDocument> | null> {
     const user = await this.usersService.findByUsername(username);
 
     if (user && (await bcrypt.compare(pass, user.password))) {
@@ -39,7 +39,10 @@ export class AuthService {
       return null;
     }
 
-    const payload = { username: user.username, role: user.role };
+    const payload: TokenPayloadDto = {
+      username: user.username,
+      role: user.role,
+    };
 
     return {
       access_token: this.jwtService.sign(payload, {
@@ -65,10 +68,15 @@ export class AuthService {
       ...registerUserDto,
       password: hashedPassword,
     });
-    const payload = { username: user.username, sub: user._id };
+    const payload: TokenPayloadDto = {
+      username: user.username,
+      role: user.role,
+    };
 
     return {
-      access_token: this.jwtService.sign(payload),
+      access_token: this.jwtService.sign(payload, {
+        subject: `${user.id}`,
+      }),
     };
   }
 }

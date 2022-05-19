@@ -2,11 +2,9 @@ import {
   Controller,
   Request,
   Post,
-  UseGuards,
   BadRequestException,
   Body,
 } from "@nestjs/common";
-import { JwtAuthGuard } from "./jwt-auth.guard";
 import { AuthService } from "./auth.service";
 import { RegisterUserDto } from "./dto/register-user.dto";
 import { LoginUserDto } from "./dto/login-user.dto";

@@ -1,7 +1,6 @@
 import {
   Controller,
   Get,
-  Post,
   Body,
   Patch,
   Param,
@@ -34,7 +33,7 @@ export class UserController {
   @AllowRoles(Role.ADMIN)
   @Patch(":id")
   async update(@Param("id") id: string, @Body() updateUserDto: UpdateUserDto) {
-    return this.userService.update(id, updateUserDto);
+    return sanitizeUser(await this.userService.update(id, updateUserDto));
   }
 
   @AllowRoles(Role.ADMIN)
