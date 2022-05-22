@@ -1,0 +1,28 @@
+### Create menu item
+
+POST http://localhost:3000/menu
+content-type: "application/json"
+
+{
+    "name": "Jajka na twardo",
+    "mealType": "entry",
+    "price": 20,
+    "description": "coś tam"
+}
+
+### GET Menu
+
+GET http://localhost:3000/menu
+
+
+
+### Create a new user
+
+POST http://localhost:3000/user
+content-type: "application/json"
+
+{
+    "username": "User",
+    "password": "entry",
+    "role": "waiter"
+}

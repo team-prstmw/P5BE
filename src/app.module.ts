@@ -4,6 +4,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { UserModule } from './user/user.module';
+import { MenuModule } from './menu/menu.module';
 
 @Module({
   imports: [ConfigModule.forRoot({
@@ -17,7 +18,7 @@ import { UserModule } from './user/user.module';
       }),
       inject: [ConfigService],
     },
-  ),UserModule],
+  ),UserModule, MenuModule],
   controllers: [AppController],
   providers: [AppService],
 })
