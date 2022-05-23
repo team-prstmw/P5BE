@@ -6,9 +6,6 @@ export type MenuDocument = Document & Menu;
 
 @Schema()
 export class Menu {
-  @Prop({ type: mongoose.Schema.Types.ObjectId })
-  _id: string;
-
   @Prop({ required: true })
   name: string;
 
