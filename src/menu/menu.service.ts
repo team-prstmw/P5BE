@@ -32,8 +32,8 @@ export class MenuService {
   }
 
   async update(id: number, updateMenuDto: UpdateMenuDto) {
-    const { name, mealType, price, description } = updateMenuDto;
-    return this.menuModel.findOneAndUpdate({ _id: id }, { name, mealType, price, description }, { new: true });
+    const { name, type, price, description } = updateMenuDto;
+    return this.menuModel.findOneAndUpdate({ _id: id }, { name, type, price, description }, { new: true });
   }
 
   async remove(id: number) {

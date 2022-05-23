@@ -13,7 +13,7 @@ export class Menu {
   name: string;
 
   @Prop({ enum: MealType, required: true })
-  mealType: MealType;
+  type: MealType;
 
   @Prop({ required: true })
   price: number;
