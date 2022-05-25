@@ -1,12 +1,12 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { Role } from "src/shared/enums/user-role.enum";
 
-export class CreateUserDto {
+export class SanitizedUserDto {
   @ApiProperty()
-  username: string;
+  id: string;
 
   @ApiProperty()
-  password: string;
+  username: string;
 
   @ApiProperty({ description: "User role", example: Role.ADMIN, enum: Role })
   role: Role;

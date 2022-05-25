@@ -10,6 +10,7 @@ async function bootstrap() {
     .setDescription("OpenAPI for P5BF")
     .setVersion("1.0")
     .addTag("p5bf")
+    .addBearerAuth()
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup("api", app, document);
