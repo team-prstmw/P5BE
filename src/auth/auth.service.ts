@@ -7,6 +7,7 @@ import { UserDocument } from "src/user/schemas/user.schema";
 import { LoginUserDto } from "./dto/login-user.dto";
 import { RegisterUserDto } from "./dto/register-user.dto";
 import { TokenPayloadDto } from "./dto/token-payload.dto";
+import { LoginResponseDto } from "./dto/login-response.dto";
 
 @Injectable()
 export class AuthService {
@@ -29,7 +30,7 @@ export class AuthService {
     return null;
   }
 
-  async login(loginUserDto: LoginUserDto) {
+  async login(loginUserDto: LoginUserDto): Promise<LoginResponseDto> {
     const user = await this.validateUser(
       loginUserDto.username,
       loginUserDto.password
